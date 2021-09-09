@@ -1,4 +1,4 @@
-# Prosject readme
+# Python GUI App Template
 
 A very small framework for setting up a python project in a virtual environment.
 The project adds `pyside6` from Qt to add GUI support.
@@ -32,4 +32,17 @@ for development):
 
 ## Make one-dir executable
 
-   $ venv\Scripts\pyinstaller.exe --noconfirm --onedir --distpath=dist/ guiapp.spec
+Windows:
+    $ venv\Scripts\pyinstaller.exe --noconfirm --onedir --distpath=dist/ guiapp.spec
+
+
+## Links
+
+- Compiling UI files
+  https://doc.qt.io/qtforpython/tutorials/basictutorial/uifiles.html
+
+- Python signals and slots:
+  https://wiki.qt.io/Qt_for_Python_Signals_and_Slots
+
+- GUI tutorials
+  https://www.pythonguis.com/

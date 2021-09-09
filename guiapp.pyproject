@@ -1,0 +1,3 @@
+{
+    "files": ["guiapp/main.py","guiapp/__init__.py","guiapp/ui/__init__.py","guiapp/ui/main.ui","guiapp/ui/main.qml"]
+}
