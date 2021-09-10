@@ -9,7 +9,6 @@ from PySide6.QtCore import (
     Slot,
 )
 from PySide6.QtWidgets import (
-    QApplication,
     QWidget,
     QLabel,
     QMainWindow,
@@ -19,18 +18,20 @@ from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from qt_material import apply_stylesheet
 
+from twisted.internet import reactor
+from twisted.internet import task
+
+from guiapp import app
 from guiapp.ui.main import Ui_MainWindow
 
 
 def main_widgets():
-    app = QApplication(sys.argv)
     label = QLabel("Hello World", alignment=Qt.AlignCenter)
     label.show()
     sys.exit(app.exec_())
 
 
 def main_qml():
-    app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
     qml_file_name = os.fspath(Path(__file__).resolve().parent / "ui/main.qml")
     engine.load(qml_file_name)
@@ -56,9 +57,20 @@ def load_ui(fname):
 
 
 def main_ui():
-    app = QApplication(sys.argv)
 
-    window = load_ui("ui/main.ui")
+    ui_file_name = os.fspath(Path(__file__).resolve().parent / "ui/main.ui")
+    ui_file = QFile(ui_file_name)
+    if not ui_file.open(QIODevice.ReadOnly):
+        print(f"Cannot open {ui_file_name}: {ui_file.errorString()}")
+        sys.exit(-1)
+    loader = QUiLoader(None)
+    window = loader.load(ui_file)
+    ui_file.close()
+    if not window:
+        print(loader.errorString())
+        sys.exit(-1)
+
+    #window = load_ui("ui/main.ui")
 
     # setup stylesheet
     apply_stylesheet(app, theme='dark_blue.xml')
@@ -70,8 +82,11 @@ def main_ui():
     button = window.findChild(QWidget, "pushButton")
     button.clicked.connect(say_hello)
 
+    task.deferLater(reactor, 3, lambda: print("TWISTED WORKS"))
+
     window.show()
-    sys.exit(app.exec())
+    app.exec()
+    reactor.runReturn()
 
 
 def main_uic():
@@ -90,19 +105,21 @@ def main_uic():
             self.ui = Ui_MainWindow_User()
             self.ui.setupUi(self)
 
-    app = QApplication(sys.argv)
     window = MainWindow()
 
     # setup stylesheet
     apply_stylesheet(app, theme='dark_blue.xml')
 
+    task.deferLater(reactor, 5, lambda: print("HEPPS"))
+
     window.show()
-    sys.exit(app.exec_())
+    app.exec_()
+    reactor.runReturn()
 
 
 def main():
+
     #main_widgets()
     #main_qml()
     main_ui()
     #main_uic()
-
