@@ -15,20 +15,26 @@ Links:
 
 Install the venv:
 
-    $ py -3.7 -m venv venv   # Windows
+    $ py -3 -m venv venv     # Windows
     $ python -m venv venv    # Linux
 
 Update the venv:
 
-    $ venv\Scripts\python.exe -m pip install --upgrade pip wheel   # Windows
+    $ venv/Scripts/python.exe -m pip install --upgrade pip wheel   # Windows
     $ venv/bin/pip install --upgrade pip wheel                     # Linux
+
+Download the pyside2reactor:
+
+    $ git clone git@github.com:sveinse/pyside2reactor.git
+    $ cd pyside2reactor
+    $ ../venv/Scripts/pip install .   # Windows
+    $ ../venv/bin/pip install .       # Linux
 
 Install the packages (Use `install -e` to install the current package in-place
 for development):
 
-    $ venv\Scripts\pip.exe install -e .[dev,test,install]   # Windows
+    $ venv/Scripts/pip.exe install -e .[dev,test,install]   # Windows
     $ venv/bin/pip install -e .[dev,test,install]           # Linux
-
 
 ## Make one-dir executable
 
