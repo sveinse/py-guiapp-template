@@ -1,7 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
-
+import os
 
 block_cipher = None
+
+basepath = os.path.dirname(os.path.abspath(SPEC))
 
 # Updated from https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Setuptools-Entry-Point
 def Entrypoint(dist, group, name, extraimports, **kwargs):
@@ -19,6 +21,8 @@ def Entrypoint(dist, group, name, extraimports, **kwargs):
     packages = []
     for distribution in kwargs['hiddenimports']:
         packages += get_toplevel(distribution)
+    if extraimports:
+        packages += extraimports
 
     kwargs.setdefault('pathex', [])
     # get the entry point
@@ -45,7 +49,10 @@ a = Entrypoint(dist='guiapp',
                extraimports=[],
                pathex=[],
                binaries=[],
-               datas=[],
+               datas=[
+                   # Note this mirros install files in pkg_win.sh
+                   (basepath + '/guiapp/ui/*.ui', 'guiapp/ui'),
+               ],
                hiddenimports=[],
                hookspath=[],
                runtime_hooks=[],

@@ -82,7 +82,7 @@ def main_ui():
     button = window.findChild(QWidget, "pushButton")
     button.clicked.connect(say_hello)
 
-    task.deferLater(reactor, 5, lambda: print("HEPPS"))
+    task.deferLater(reactor, 3, lambda: print("TWISTED WORKS"))
 
     window.show()
     app.exec()
@@ -118,11 +118,6 @@ def main_uic():
 
 
 def main():
-    print("MAIN")
-
-    if "twisted.internet.reactor" in sys.modules:
-        print("REACTOR PRESENT (MAIN)")
-    #    del sys.modules["twisted.internet.reactor"]
 
     #main_widgets()
     #main_qml()
