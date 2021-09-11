@@ -14,24 +14,23 @@ from PySide6.QtWidgets import (
     QMainWindow,
 )
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
+
 from qt_material import apply_stylesheet
 
 from twisted.internet import reactor
 from twisted.internet import task
 
-from guiapp import app
 from guiapp.ui.main import Ui_MainWindow
 
 
-def main_widgets():
+def main_widgets(app):
     label = QLabel("Hello World", alignment=Qt.AlignCenter)
     label.show()
     sys.exit(app.exec_())
 
 
-def main_qml():
+def main_qml(app):
     engine = QQmlApplicationEngine()
     qml_file_name = os.fspath(Path(__file__).resolve().parent / "ui/main.qml")
     engine.load(qml_file_name)
@@ -56,32 +55,30 @@ def load_ui(fname):
     return window
 
 
-def main_ui():
+# Promote window to main window
+class MainWindow(QMainWindow, Ui_MainWindow):
+    pass
 
-    ui_file_name = os.fspath(Path(__file__).resolve().parent / "ui/main.ui")
-    ui_file = QFile(ui_file_name)
-    if not ui_file.open(QIODevice.ReadOnly):
-        print(f"Cannot open {ui_file_name}: {ui_file.errorString()}")
-        sys.exit(-1)
-    loader = QUiLoader(None)
-    window = loader.load(ui_file)
-    ui_file.close()
-    if not window:
-        print(loader.errorString())
-        sys.exit(-1)
 
-    #window = load_ui("ui/main.ui")
+def main_ui(app):
 
     # setup stylesheet
     apply_stylesheet(app, theme='dark_blue.xml')
+
+    # Load the UI on the fly
+    #window = load_ui("ui/main.ui")
+
+    # ..or use the uic class
+    window = MainWindow()
+    window.setupUi(window)
 
     @Slot()
     def say_hello():
         print("Button clicked, Hello!")
 
-    button = window.findChild(QWidget, "pushButton")
-    button.clicked.connect(say_hello)
+    window.pushButton.clicked.connect(say_hello)
 
+    # Test that twisted is operational
     task.deferLater(reactor, 3, lambda: print("TWISTED WORKS"))
 
     window.show()
@@ -89,37 +86,8 @@ def main_ui():
     reactor.runReturn()
 
 
-def main_uic():
+def main(app):
 
-    class Ui_MainWindow_User(Ui_MainWindow):
-        @Slot()
-        def say_hello(self):
-            print("Button clicked, Hello!")
-        def setupUi(self, MainWindow):
-            super().setupUi(MainWindow)
-            self.pushButton.clicked.connect(self.say_hello)
-
-    class MainWindow(QMainWindow):
-        def __init__(self):
-            super(MainWindow, self).__init__()
-            self.ui = Ui_MainWindow_User()
-            self.ui.setupUi(self)
-
-    window = MainWindow()
-
-    # setup stylesheet
-    apply_stylesheet(app, theme='dark_blue.xml')
-
-    task.deferLater(reactor, 5, lambda: print("HEPPS"))
-
-    window.show()
-    app.exec_()
-    reactor.runReturn()
-
-
-def main():
-
-    #main_widgets()
-    #main_qml()
-    main_ui()
-    #main_uic()
+    #main_widgets(app)
+    #main_qml(app)
+    main_ui(app)

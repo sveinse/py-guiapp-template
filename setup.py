@@ -178,7 +178,7 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         'console_scripts': [
-            'guiapp=guiapp.main:main',
+            'guiapp=guiapp.__main__:main',
         ],
     },
 
