@@ -1,6 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication
-import pyside2reactor
+import qt5reactor
 
 
 def main():
@@ -13,7 +13,7 @@ def main():
 
     # Install the pyside2 twisted reactor
     # This must be done before any other twisted imports
-    pyside2reactor.install()
+    qt5reactor.install()
 
     # This construct is required ensure twisted reactor is not loaded
     # before the above install
