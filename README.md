@@ -3,12 +3,8 @@
 A very small framework for setting up a python project in a virtual environment.
 The project adds `pyside6` from Qt to add GUI support.
 
-The project also includes `pyinstaller`
-
-Links:
-
-- https://wiki.qt.io/Qt_for_Python
-- http://www.pyinstaller.org/
+The project is able to be installed with `pyinstaller` to make self-contained
+executables.
 
 
 ## Setup
@@ -43,6 +39,12 @@ Windows:
 
 
 ## Links
+
+- Qt for Python (pyside6)
+  https://wiki.qt.io/Qt_for_Python
+
+- Pyinstaller
+  http://www.pyinstaller.org/
 
 - Compiling UI files
   https://doc.qt.io/qtforpython/tutorials/basictutorial/uifiles.html
