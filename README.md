@@ -19,10 +19,10 @@ Update the venv:
     $ venv/Scripts/python.exe -m pip install --upgrade pip wheel   # Windows
     $ venv/bin/pip install --upgrade pip wheel                     # Linux
 
-Download the pyside2reactor:
+Download the qt5reactor:
 
-    $ git clone git@github.com:sveinse/pyside2reactor.git
-    $ cd pyside2reactor
+    $ git clone git@github.com:sveinse/qt5reactor.git -b feature-pyside6
+    $ cd qt5reactor
     $ ../venv/Scripts/pip install .   # Windows
     $ ../venv/bin/pip install .       # Linux
 

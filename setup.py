@@ -139,7 +139,7 @@ setup(
     install_requires=[  # Optional
         'pyside6',
         'qt-material',
-        'pyside2reactor',
+        'qt5reactor',
     ],
 
     # List additional groups of dependencies here (e.g. development
