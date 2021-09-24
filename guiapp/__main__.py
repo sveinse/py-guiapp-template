@@ -1,9 +1,13 @@
+import os
 import sys
 from PySide6.QtWidgets import QApplication
 import qt5reactor
 
 
 def main():
+
+    # Force darkmode
+    os.environ['QT_QPA_PLATFORM'] = "windows:darkmode=1"
 
     # Create the main application first due to the twisted singleton usage
     app = QApplication(sys.argv)

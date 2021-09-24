@@ -2,6 +2,7 @@ import os
 import sys
 from pathlib import Path
 
+from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import (
     Qt,
     QFile,
@@ -24,13 +25,13 @@ from twisted.internet import task
 from guiapp.ui.main import Ui_MainWindow
 
 
-def main_widgets(app):
+def main_widgets(app: QApplication):
     label = QLabel("Hello World", alignment=Qt.AlignCenter)
     label.show()
     sys.exit(app.exec_())
 
 
-def main_qml(app):
+def main_qml(app: QApplication):
     engine = QQmlApplicationEngine()
     qml_file_name = os.fspath(Path(__file__).resolve().parent / "ui/main.qml")
     engine.load(qml_file_name)
@@ -60,7 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     pass
 
 
-def main_ui(app):
+def main_ui(app: QApplication):
 
     # setup stylesheet
     apply_stylesheet(app, theme='dark_blue.xml')
@@ -86,7 +87,7 @@ def main_ui(app):
     reactor.runReturn()
 
 
-def main(app):
+def main(app: QApplication):
 
     #main_widgets(app)
     #main_qml(app)
