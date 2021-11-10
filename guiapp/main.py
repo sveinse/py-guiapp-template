@@ -1,8 +1,9 @@
 import os
 import sys
 from pathlib import Path
+import asyncio
+import functools
 
-from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import (
     Qt,
     QFile,
@@ -10,17 +11,13 @@ from PySide6.QtCore import (
     Slot,
 )
 from PySide6.QtWidgets import (
-    QWidget,
     QLabel,
     QMainWindow,
 )
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtQml import QQmlApplicationEngine
-
 from qt_material import apply_stylesheet
-
-from twisted.internet import reactor
-from twisted.internet import task
+from qasync import QApplication
 
 from guiapp.ui.main import Ui_MainWindow
 
@@ -61,7 +58,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     pass
 
 
-def main_ui(app: QApplication):
+async def main_ui(app: QApplication):
+
+    def close_future(future, loop):
+        loop.call_later(10, future.cancel)
+        future.cancel()
+
+    loop = asyncio.get_event_loop()
+    future = asyncio.Future()
+
+    if hasattr(app, "aboutToQuit"):
+        getattr(app, "aboutToQuit").connect(
+            functools.partial(close_future, future, loop)
+        )
 
     # setup stylesheet
     apply_stylesheet(app, theme='dark_blue.xml')
@@ -79,16 +88,18 @@ def main_ui(app: QApplication):
 
     window.pushButton.clicked.connect(say_hello)
 
-    # Test that twisted is operational
-    task.deferLater(reactor, 3, lambda: print("TWISTED WORKS"))
+    # Test that asyncio is operational
+    loop.call_later(3, lambda: print("ASYNCIO WORKS"))
 
     window.show()
-    app.exec()
-    reactor.runReturn()
+
+    await future
 
 
-def main(app: QApplication):
+async def main():
+
+    app = QApplication.instance()
 
     #main_widgets(app)
     #main_qml(app)
-    main_ui(app)
+    await main_ui(app)
