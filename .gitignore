@@ -6,3 +6,4 @@ build/
 *.pyc
 *.pyproject.user
 .qt_for_python
+*.whl
